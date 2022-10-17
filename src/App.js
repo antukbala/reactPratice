@@ -6,6 +6,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      searchField: '',
       apiList: [
         {
           API: "TL Ops",
@@ -51,20 +52,22 @@ class App extends Component {
   // }
 
   render() {
+    const searchResult = this.state.apiList.filter((item)=>{
+      return item.API.toLowerCase().includes(this.state.searchField);
+    });
+
     return (
       <div className="App">
         <header className="App-header">
           <input className='search-box' type='search' placeholder='search name' onChange={(event)=>{
-            const searchString = event.target.value.toLocaleLowerCase();
-            const searchResult = this.state.apiList.filter((item)=>{
-              return item.API.toLocaleLowerCase().includes(searchString);
-            });
+            const searchField = event.target.value.toLowerCase();
+            console.log(searchField);
             this.setState(()=>{
-              return { apiList : searchResult };
+              return { searchField };
             })
           }}/>
           <img src={logo} className="App-logo" alt="logo" />
-          {this.state.apiList.map((api)=>{
+          {searchResult.map((api)=>{
             return <div key={api.API}><h1>{api.API}, {api.Link}</h1></div>;
           })}
         </header>
